@@ -4,8 +4,8 @@ interface Settings {
   gridSize: number;
   tileSize: number;
   speed: number;
-  step: number;
   direction: 'up' | 'down' | 'left' | 'right';
+  snakeColor: string;
 }
 
 type Positions = [number, number][];
@@ -15,8 +15,8 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     gridSize: 40,
     tileSize: 10,
     speed: 5,
-    step: 0,
     direction: 'right',
+    snakeColor: '#691a1a',
   };
 
   let snakeLength = 5;
@@ -47,7 +47,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   };
 
   const draw = (ctx: CanvasRenderingContext2D) => {
-    ctx.fillStyle = '#691a1a';
+    ctx.fillStyle = settings.snakeColor;
     ctx.beginPath();
     ctx.clearRect(0, 0, 500, 500);
     positions.forEach((x) => {
@@ -64,7 +64,6 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     const interval = setInterval(() => {
       moveSnake();
       draw(context);
-      settings.step++;
     }, 1000 / settings.speed);
 
     return () => clearInterval(interval);
