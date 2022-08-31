@@ -23,14 +23,35 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
 
   const getStartingPosition = (): Positions => [[(settings.gridSize * settings.tileSize) / 2, (settings.gridSize * settings.tileSize) / 2]];
 
-  const positions: Positions = getStartingPosition();
+  let positions: Positions = getStartingPosition();
+
+  const getNewHeadPosition = (): [number, number] => {
+    switch (settings.direction) {
+      case 'right':
+        return [positions[0][0] + settings.tileSize, positions[0][1]];
+      case 'left':
+        return [positions[0][0] - settings.tileSize, positions[0][1]];
+      case 'up':
+        return [positions[0][0], positions[0][1] - settings.tileSize];
+      case 'down':
+        return [positions[0][0], positions[0][1] + settings.tileSize];
+      default:
+        return [0, 0];
+    }
+  };
+
+  const moveSnake = () => {
+    const cutEnd = (arr: [number, number][]) => (snakeLength >= positions.length ? arr : arr.slice(0, snakeLength - positions.length));
+    const newPos = getNewHeadPosition();
+    positions = [newPos, ...cutEnd(positions)];
+  };
 
   const draw = (ctx: CanvasRenderingContext2D) => {
     ctx.fillStyle = '#691a1a';
     ctx.beginPath();
     ctx.clearRect(0, 0, 500, 500);
     positions.forEach((x) => {
-      ctx.fillRect(x[0] + settings.step * settings.tileSize, x[1], settings.tileSize, settings.tileSize);
+      ctx.fillRect(x[0], x[1], settings.tileSize, settings.tileSize);
     });
   };
 
@@ -41,6 +62,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     if (!context) return;
 
     const interval = setInterval(() => {
+      moveSnake();
       draw(context);
       settings.step++;
     }, 1000 / settings.speed);
