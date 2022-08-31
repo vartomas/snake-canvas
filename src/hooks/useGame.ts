@@ -31,8 +31,6 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
       Math.floor(Math.random() * settings.gridSize) * settings.tileSize,
     ];
 
-    console.log(randomPos);
-
     if (positions.find((x) => x[0] === randomPos[0] && x[1] === randomPos[1])) {
       return generateRandomPointPosition();
     }
