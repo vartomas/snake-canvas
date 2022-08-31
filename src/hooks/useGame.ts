@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Settings {
   gridSize: number;
@@ -11,16 +11,19 @@ interface Settings {
 
 type Positions = [number, number][];
 
-export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | null>) => {
-  const settings: Settings = {
-    gridSize: 40,
-    tileSize: 10,
-    speed: 10,
-    direction: 'right',
-    snakeColor: '#691a1a',
-    pointColor: '#34eb46',
-  };
+const initialSettings: Settings = {
+  gridSize: 40,
+  tileSize: 10,
+  speed: 10,
+  direction: 'right',
+  snakeColor: '#691a1a',
+  pointColor: '#34eb46',
+};
 
+export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | null>) => {
+  const [gameOver, setGameOver] = useState(false);
+
+  let settings: Settings = { ...initialSettings };
   let snakeLength = 5;
 
   const getStartingPosition = (): Positions => [[(settings.gridSize * settings.tileSize) / 2, (settings.gridSize * settings.tileSize) / 2]];
@@ -61,12 +64,37 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     pointPosition = generateRandomPointPosition();
   };
 
+  const resetGame = () => {
+    settings = { ...initialSettings };
+    snakeLength = 5;
+    positions = getStartingPosition();
+    pointPosition = generateRandomPointPosition();
+  };
+
+  const checkCrash = (newPos: [number, number]) => {
+    const { gridSize, tileSize } = settings;
+    if (newPos[0] > gridSize * tileSize || newPos[0] < 0 || newPos[1] > gridSize * tileSize || newPos[1] < 0) {
+      return true;
+    }
+
+    if (positions.find((x) => x[0] === newPos[0] && x[1] === newPos[1])) {
+      return true;
+    }
+
+    return false;
+  };
+
   const moveSnake = () => {
     const cutEnd = (arr: [number, number][]) => (snakeLength >= positions.length ? arr : arr.slice(0, snakeLength - positions.length));
     const newPos = getNewHeadPosition();
 
     if (newPos[0] === pointPosition[0] && newPos[1] === pointPosition[1]) {
       eatPoint();
+    }
+
+    if (checkCrash(newPos)) {
+      setGameOver(true);
+      return;
     }
 
     positions = [newPos, ...cutEnd(positions)];
@@ -84,6 +112,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   };
 
   useEffect(() => {
+    if (gameOver) return;
     const canvas = canvasRef?.current;
     if (!canvas) return;
     const context = canvas.getContext('2d');
@@ -95,7 +124,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     }, 1000 / settings.speed);
 
     return () => clearInterval(interval);
-  }, [draw]);
+  }, [draw, gameOver]);
 
   useEffect(() => {
     const keyPressEvent = (e: KeyboardEvent) => {
@@ -114,12 +143,17 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
       if (e.key === 'ArrowDown' && settings.direction !== 'up') {
         settings.direction = 'down';
       }
+
+      if (e.key === ' ' && gameOver) {
+        resetGame();
+        setGameOver(false);
+      }
     };
 
     document.addEventListener('keydown', keyPressEvent);
 
     return () => document.removeEventListener('keydown', keyPressEvent);
-  }, []);
+  }, [gameOver]);
 
   return { settings };
 };
