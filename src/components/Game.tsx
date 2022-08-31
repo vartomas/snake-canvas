@@ -1,5 +1,16 @@
+import { useRef } from 'react';
+import styled from 'styled-components';
+import { useGame } from '../hooks/useGame';
+
 const Game = () => {
-  return <canvas id="game" width="500" height="500" />;
+  const canvasRef = useRef<null | HTMLCanvasElement>(null);
+  const { settings } = useGame(canvasRef);
+
+  return <Canvas ref={canvasRef} width={settings.gridSize * settings.tileSize} height={settings.gridSize * settings.tileSize} />;
 };
+
+const Canvas = styled.canvas`
+  border: 1px solid black;
+`;
 
 export default Game;
