@@ -155,5 +155,5 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     return () => document.removeEventListener('keydown', keyPressEvent);
   }, [gameOver]);
 
-  return { settings };
+  return { gameOver, settings };
 };
