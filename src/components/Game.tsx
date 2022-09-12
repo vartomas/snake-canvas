@@ -16,7 +16,7 @@ const Game = () => {
 };
 
 const Canvas = styled.canvas`
-  border: 10px solid #a8dadc;
+  border: 3px solid #a8dadc;
   background-color: #f1faee;
 `;
 

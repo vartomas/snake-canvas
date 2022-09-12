@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 interface Settings {
   gridSize: number;
   tileSize: number;
-  speed: 10;
+  speed: number;
   snakeColor: string;
 }
 
@@ -14,7 +14,7 @@ type Positions = [number, number][];
 const settings: Settings = {
   gridSize: 40,
   tileSize: 10,
-  speed: 10,
+  speed: 20,
   snakeColor: '#457b9d',
 };
 
@@ -48,24 +48,35 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   let pointPosition = generateRandomPointPosition();
 
   const getNewHeadPosition = (): [number, number] => {
-    switch (snakeRef.current.direction) {
-      case 'right':
-        return [positions[0][0] + settings.tileSize, positions[0][1]];
-      case 'left':
-        return [positions[0][0] - settings.tileSize, positions[0][1]];
-      case 'up':
-        return [positions[0][0], positions[0][1] - settings.tileSize];
-      case 'down':
-        return [positions[0][0], positions[0][1] + settings.tileSize];
-      default:
-        return [0, 0];
+    const { gridSize, tileSize } = settings;
+
+    if (snakeRef.current.direction === 'right') {
+      const position: [number, number] = [positions[0][0] + settings.tileSize, positions[0][1]];
+      return position[0] > (gridSize - 1) * tileSize ? [0, position[1]] : position;
     }
+
+    if (snakeRef.current.direction === 'left') {
+      const position: [number, number] = [positions[0][0] - settings.tileSize, positions[0][1]];
+      return position[0] < 0 ? [(gridSize - 1) * tileSize, position[1]] : position;
+    }
+
+    if (snakeRef.current.direction === 'up') {
+      const position: [number, number] = [positions[0][0], positions[0][1] - settings.tileSize];
+      return position[1] < 0 ? [position[0], (gridSize - 1) * tileSize] : position;
+    }
+
+    if (snakeRef.current.direction === 'down') {
+      const position: [number, number] = [positions[0][0], positions[0][1] + settings.tileSize];
+      return position[1] > (gridSize - 1) * tileSize ? [position[0], 0] : position;
+    }
+
+    return [0, 0];
   };
 
   const eatPoint = () => {
-    snakeRef.current.snakeLength += 1;
+    snakeRef.current.snakeLength += 3;
     pointPosition = generateRandomPointPosition();
-    snakeRef.current.score += 1;
+    snakeRef.current.score += 3;
   };
 
   const resetGame = () => {
@@ -77,11 +88,6 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   };
 
   const checkCrash = (newPos: [number, number]) => {
-    const { gridSize, tileSize } = settings;
-    if (newPos[0] > gridSize * tileSize || newPos[0] < 0 || newPos[1] > gridSize * tileSize || newPos[1] < 0) {
-      return true;
-    }
-
     if (positions.find((x) => x[0] === newPos[0] && x[1] === newPos[1])) {
       return true;
     }
