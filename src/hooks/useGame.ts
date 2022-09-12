@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 interface Settings {
   gridSize: number;
   tileSize: number;
-  speed: number;
+  speed: 10;
   direction: 'up' | 'down' | 'left' | 'right';
   snakeColor: string;
 }
@@ -20,6 +20,9 @@ const initialSettings: Settings = {
 
 export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | null>) => {
   const [gameOver, setGameOver] = useState(false);
+  const snakeRef = useRef({
+    score: 0,
+  });
 
   let settings: Settings = { ...initialSettings };
   let snakeLength = 5;
@@ -60,6 +63,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   const eatPoint = () => {
     ++snakeLength;
     pointPosition = generateRandomPointPosition();
+    snakeRef.current.score += 1;
   };
 
   const resetGame = () => {
@@ -67,6 +71,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     snakeLength = 5;
     positions = getStartingPosition();
     pointPosition = generateRandomPointPosition();
+    snakeRef.current.score = 0;
     setGameOver(false);
   };
 
@@ -155,5 +160,5 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     return () => document.removeEventListener('keydown', keyPressEvent);
   }, [gameOver]);
 
-  return { gameOver, settings, resetGame };
+  return { score: snakeRef.current.score, gameOver, settings, resetGame };
 };

@@ -2,11 +2,12 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 interface Props {
+  score: number;
   gameOver: boolean;
   resetGame: () => void;
 }
 
-const GameOverModal: React.FC<Props> = ({ gameOver, resetGame }) => {
+const GameOverModal: React.FC<Props> = ({ score, gameOver, resetGame }) => {
   return (
     <>
       {gameOver && (
@@ -18,7 +19,7 @@ const GameOverModal: React.FC<Props> = ({ gameOver, resetGame }) => {
           transition={{ duration: 0.5, type: 'spring', stiffness: 200, damping: 10, mass: 1 }}
         >
           <Header>Game over</Header>
-          <NumberLine>0</NumberLine>
+          <NumberLine>{score}</NumberLine>
           <Button as={motion.button} whileHover={{ scale: 1.1 }} onClick={resetGame}>
             Restart (Spacebar)
           </Button>
