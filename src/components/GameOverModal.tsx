@@ -3,9 +3,10 @@ import styled from 'styled-components';
 
 interface Props {
   gameOver: boolean;
+  resetGame: () => void;
 }
 
-const GameOverModal: React.FC<Props> = ({ gameOver }) => {
+const GameOverModal: React.FC<Props> = ({ gameOver, resetGame }) => {
   return (
     <>
       {gameOver && (
@@ -17,7 +18,10 @@ const GameOverModal: React.FC<Props> = ({ gameOver }) => {
           transition={{ duration: 0.5, type: 'spring', stiffness: 200, damping: 10, mass: 1 }}
         >
           <Header>Game over</Header>
-          <ScoreLine>Score: 0</ScoreLine>
+          <NumberLine>0</NumberLine>
+          <Button as={motion.button} whileHover={{ scale: 1.1 }} onClick={resetGame}>
+            Restart (Spacebar)
+          </Button>
         </Container>
       )}
     </>
@@ -31,20 +35,34 @@ const Container = styled.div`
   position: absolute;
   border-radius: 24px;
   border: 3px solid #a8dadc;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const Header = styled.h2`
   color: #f1faee;
   font-size: 36px;
-  text-align: center;
   margin-top: 12px;
 `;
 
-const ScoreLine = styled.h3`
+const NumberLine = styled.h3`
   color: #f1faee;
+  font-size: 156px;
+`;
+
+const Button = styled.button`
+  margin-bottom: 24px;
+  padding: 24px;
   font-size: 24px;
-  text-align: center;
-  margin-top: 12px;
+  color: #1d3557;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 `;
 
 export default GameOverModal;

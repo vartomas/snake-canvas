@@ -67,6 +67,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     snakeLength = 5;
     positions = getStartingPosition();
     pointPosition = generateRandomPointPosition();
+    setGameOver(false);
   };
 
   const checkCrash = (newPos: [number, number]) => {
@@ -146,7 +147,6 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
 
       if (e.key === ' ' && gameOver) {
         resetGame();
-        setGameOver(false);
       }
     };
 
@@ -155,5 +155,5 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     return () => document.removeEventListener('keydown', keyPressEvent);
   }, [gameOver]);
 
-  return { gameOver, settings };
+  return { gameOver, settings, resetGame };
 };

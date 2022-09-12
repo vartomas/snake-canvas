@@ -5,12 +5,12 @@ import GameOverModal from './GameOverModal';
 
 const Game = () => {
   const canvasRef = useRef<null | HTMLCanvasElement>(null);
-  const { gameOver, settings } = useGame(canvasRef);
+  const { gameOver, settings, resetGame } = useGame(canvasRef);
 
   return (
     <>
       <Canvas ref={canvasRef} width={settings.gridSize * settings.tileSize} height={settings.gridSize * settings.tileSize} />
-      <GameOverModal gameOver={gameOver} />
+      <GameOverModal gameOver={gameOver} resetGame={resetGame} />
     </>
   );
 };
