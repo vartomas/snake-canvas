@@ -96,18 +96,21 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   };
 
   const eatPoint = (fruit: Fruit) => {
-    snakeRef.current.snakeLength += 5;
-    snakeRef.current.score += 1;
-
     switch (fruit) {
       case 'strawberry':
         pointPositions.strawberry = generateRandomPointPosition();
+        snakeRef.current.snakeLength += 5;
+        snakeRef.current.score += 5;
         break;
       case 'banana':
         pointPositions.banana = generateRandomPointPosition();
+        snakeRef.current.snakeLength += 3;
+        snakeRef.current.score += 3;
         break;
       case 'apple':
         pointPositions.apple = generateRandomPointPosition();
+        snakeRef.current.snakeLength += 1;
+        snakeRef.current.score += 1;
         break;
       default:
         break;
