@@ -11,6 +11,8 @@ type Direction = 'up' | 'down' | 'left' | 'right';
 
 type Positions = [number, number][];
 
+type Fruit = 'strawberry' | 'banana' | 'apple';
+
 const settings: Settings = {
   gridSize: 40,
   tileSize: 10,
@@ -27,9 +29,19 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   });
 
   const strawberry = new Image();
+  const banana = new Image();
+  const apple = new Image();
   strawberry.src = 'strawberry.svg';
+  banana.src = 'banana.svg';
+  apple.src = 'apple.svg';
 
   const getStartingPosition = (): Positions => [[(settings.gridSize * settings.tileSize) / 2, (settings.gridSize * settings.tileSize) / 2]];
+
+  let pointPositions = {
+    strawberry: [0, 0],
+    banana: [0, 0],
+    apple: [0, 0],
+  };
 
   const generateRandomPointPosition = (): [number, number] => {
     const randomPos: [number, number] = [
@@ -41,11 +53,21 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
       return generateRandomPointPosition();
     }
 
+    const deployedPoints = Object.values(pointPositions);
+
+    if (deployedPoints.find((x) => x[0] === randomPos[0] && x[1] === randomPos[1])) {
+      return generateRandomPointPosition();
+    }
+
     return randomPos;
   };
 
   let positions: Positions = getStartingPosition();
-  let pointPosition = generateRandomPointPosition();
+  pointPositions = {
+    strawberry: generateRandomPointPosition(),
+    banana: generateRandomPointPosition(),
+    apple: generateRandomPointPosition(),
+  };
 
   const getNewHeadPosition = (): [number, number] => {
     const { gridSize, tileSize } = settings;
@@ -73,16 +95,33 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     return [0, 0];
   };
 
-  const eatPoint = () => {
-    snakeRef.current.snakeLength += 3;
-    pointPosition = generateRandomPointPosition();
-    snakeRef.current.score += 3;
+  const eatPoint = (fruit: Fruit) => {
+    snakeRef.current.snakeLength += 5;
+    snakeRef.current.score += 1;
+
+    switch (fruit) {
+      case 'strawberry':
+        pointPositions.strawberry = generateRandomPointPosition();
+        break;
+      case 'banana':
+        pointPositions.banana = generateRandomPointPosition();
+        break;
+      case 'apple':
+        pointPositions.apple = generateRandomPointPosition();
+        break;
+      default:
+        break;
+    }
   };
 
   const resetGame = () => {
     snakeRef.current.snakeLength = 5;
     positions = getStartingPosition();
-    pointPosition = generateRandomPointPosition();
+    pointPositions = {
+      strawberry: generateRandomPointPosition(),
+      banana: generateRandomPointPosition(),
+      apple: generateRandomPointPosition(),
+    };
     snakeRef.current.score = 0;
     setGameOver(false);
   };
@@ -100,8 +139,16 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
       snakeRef.current.snakeLength >= positions.length ? arr : arr.slice(0, snakeRef.current.snakeLength - positions.length);
     const newPos = getNewHeadPosition();
 
-    if (newPos[0] === pointPosition[0] && newPos[1] === pointPosition[1]) {
-      eatPoint();
+    if (newPos[0] === pointPositions.strawberry[0] && newPos[1] === pointPositions.strawberry[1]) {
+      eatPoint('strawberry');
+    }
+
+    if (newPos[0] === pointPositions.banana[0] && newPos[1] === pointPositions.banana[1]) {
+      eatPoint('banana');
+    }
+
+    if (newPos[0] === pointPositions.apple[0] && newPos[1] === pointPositions.apple[1]) {
+      eatPoint('apple');
     }
 
     if (checkCrash(newPos)) {
@@ -112,10 +159,12 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     positions = [newPos, ...cutEnd(positions)];
   };
 
-  const draw = (ctx: CanvasRenderingContext2D, image: HTMLImageElement) => {
+  const draw = (ctx: CanvasRenderingContext2D) => {
     ctx.beginPath();
     ctx.clearRect(0, 0, 500, 500);
-    ctx.drawImage(image, pointPosition[0], pointPosition[1], settings.tileSize, settings.tileSize);
+    ctx.drawImage(strawberry, pointPositions.strawberry[0], pointPositions.strawberry[1], settings.tileSize, settings.tileSize);
+    ctx.drawImage(banana, pointPositions.banana[0], pointPositions.banana[1], settings.tileSize, settings.tileSize);
+    ctx.drawImage(apple, pointPositions.apple[0], pointPositions.apple[1], settings.tileSize, settings.tileSize);
     ctx.fillStyle = settings.snakeColor;
     positions.forEach((x) => {
       ctx.fillRect(x[0], x[1], settings.tileSize, settings.tileSize);
@@ -127,7 +176,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     if (gameOver || !context) return;
     const interval = setInterval(() => {
       moveSnake();
-      draw(context, strawberry);
+      draw(context);
     }, 1000 / settings.speed);
 
     return () => clearInterval(interval);
