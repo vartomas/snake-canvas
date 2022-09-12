@@ -6,7 +6,6 @@ interface Settings {
   speed: number;
   direction: 'up' | 'down' | 'left' | 'right';
   snakeColor: string;
-  pointColor: string;
 }
 
 type Positions = [number, number][];
@@ -16,8 +15,7 @@ const initialSettings: Settings = {
   tileSize: 10,
   speed: 10,
   direction: 'right',
-  snakeColor: '#691a1a',
-  pointColor: '#34eb46',
+  snakeColor: '#457b9d',
 };
 
 export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | null>) => {
@@ -100,11 +98,10 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     positions = [newPos, ...cutEnd(positions)];
   };
 
-  const draw = (ctx: CanvasRenderingContext2D) => {
-    ctx.fillStyle = settings.pointColor;
+  const draw = (ctx: CanvasRenderingContext2D, image: HTMLImageElement) => {
     ctx.beginPath();
     ctx.clearRect(0, 0, 500, 500);
-    ctx.fillRect(pointPosition[0], pointPosition[1], settings.tileSize, settings.tileSize);
+    ctx.drawImage(image, pointPosition[0], pointPosition[1], settings.tileSize, settings.tileSize);
     ctx.fillStyle = settings.snakeColor;
     positions.forEach((x) => {
       ctx.fillRect(x[0], x[1], settings.tileSize, settings.tileSize);
@@ -118,9 +115,12 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     const context = canvas.getContext('2d');
     if (!context) return;
 
+    const image = new Image();
+    image.src = 'strawberry.svg';
+
     const interval = setInterval(() => {
       moveSnake();
-      draw(context);
+      draw(context, image);
     }, 1000 / settings.speed);
 
     return () => clearInterval(interval);

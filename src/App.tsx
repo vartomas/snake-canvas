@@ -24,6 +24,7 @@ const Wrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #2f3e46;
 `;
 
 export default App;

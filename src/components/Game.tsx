@@ -10,7 +10,8 @@ const Game = () => {
 };
 
 const Canvas = styled.canvas`
-  border: 1px solid black;
+  border: 10px solid #a8dadc;
+  background-color: #f1faee;
 `;
 
 export default Game;
