@@ -4,28 +4,27 @@ interface Settings {
   gridSize: number;
   tileSize: number;
   speed: 10;
-  direction: 'up' | 'down' | 'left' | 'right';
   snakeColor: string;
 }
 
+type Direction = 'up' | 'down' | 'left' | 'right';
+
 type Positions = [number, number][];
 
-const initialSettings: Settings = {
+const settings: Settings = {
   gridSize: 40,
   tileSize: 10,
   speed: 10,
-  direction: 'right',
   snakeColor: '#457b9d',
 };
 
 export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | null>) => {
   const [gameOver, setGameOver] = useState(false);
-  const snakeRef = useRef({
+  const snakeRef = useRef<{ score: number; direction: Direction; snakeLength: number }>({
     score: 0,
+    direction: 'right',
+    snakeLength: 5,
   });
-
-  let settings: Settings = { ...initialSettings };
-  let snakeLength = 5;
 
   const strawberry = new Image();
   strawberry.src = 'strawberry.svg';
@@ -49,7 +48,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   let pointPosition = generateRandomPointPosition();
 
   const getNewHeadPosition = (): [number, number] => {
-    switch (settings.direction) {
+    switch (snakeRef.current.direction) {
       case 'right':
         return [positions[0][0] + settings.tileSize, positions[0][1]];
       case 'left':
@@ -64,14 +63,13 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   };
 
   const eatPoint = () => {
-    ++snakeLength;
+    snakeRef.current.snakeLength += 1;
     pointPosition = generateRandomPointPosition();
     snakeRef.current.score += 1;
   };
 
   const resetGame = () => {
-    settings = { ...initialSettings };
-    snakeLength = 5;
+    snakeRef.current.snakeLength = 5;
     positions = getStartingPosition();
     pointPosition = generateRandomPointPosition();
     snakeRef.current.score = 0;
@@ -92,7 +90,8 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   };
 
   const moveSnake = () => {
-    const cutEnd = (arr: [number, number][]) => (snakeLength >= positions.length ? arr : arr.slice(0, snakeLength - positions.length));
+    const cutEnd = (arr: [number, number][]) =>
+      snakeRef.current.snakeLength >= positions.length ? arr : arr.slice(0, snakeRef.current.snakeLength - positions.length);
     const newPos = getNewHeadPosition();
 
     if (newPos[0] === pointPosition[0] && newPos[1] === pointPosition[1]) {
@@ -130,20 +129,20 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
 
   useEffect(() => {
     const keyPressEvent = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' && settings.direction !== 'right') {
-        settings.direction = 'left';
+      if (e.key === 'ArrowLeft' && snakeRef.current.direction !== 'right') {
+        snakeRef.current.direction = 'left';
       }
 
-      if (e.key === 'ArrowRight' && settings.direction !== 'left') {
-        settings.direction = 'right';
+      if (e.key === 'ArrowRight' && snakeRef.current.direction !== 'left') {
+        snakeRef.current.direction = 'right';
       }
 
-      if (e.key === 'ArrowUp' && settings.direction !== 'down') {
-        settings.direction = 'up';
+      if (e.key === 'ArrowUp' && snakeRef.current.direction !== 'down') {
+        snakeRef.current.direction = 'up';
       }
 
-      if (e.key === 'ArrowDown' && settings.direction !== 'up') {
-        settings.direction = 'down';
+      if (e.key === 'ArrowDown' && snakeRef.current.direction !== 'up') {
+        snakeRef.current.direction = 'down';
       }
 
       if (e.key === ' ' && gameOver) {
