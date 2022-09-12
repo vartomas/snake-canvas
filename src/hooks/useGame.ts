@@ -27,6 +27,9 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   let settings: Settings = { ...initialSettings };
   let snakeLength = 5;
 
+  const strawberry = new Image();
+  strawberry.src = 'strawberry.svg';
+
   const getStartingPosition = (): Positions => [[(settings.gridSize * settings.tileSize) / 2, (settings.gridSize * settings.tileSize) / 2]];
 
   const generateRandomPointPosition = (): [number, number] => {
@@ -115,18 +118,11 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   };
 
   useEffect(() => {
-    if (gameOver) return;
-    const canvas = canvasRef?.current;
-    if (!canvas) return;
-    const context = canvas.getContext('2d');
-    if (!context) return;
-
-    const image = new Image();
-    image.src = 'strawberry.svg';
-
+    const context = canvasRef?.current?.getContext('2d');
+    if (gameOver || !context) return;
     const interval = setInterval(() => {
       moveSnake();
-      draw(context, image);
+      draw(context, strawberry);
     }, 1000 / settings.speed);
 
     return () => clearInterval(interval);
