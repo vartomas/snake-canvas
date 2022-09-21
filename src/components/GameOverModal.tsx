@@ -22,14 +22,14 @@ const GameOverModal: React.FC<Props> = ({ score, fruitsEaten, gameOver, resetGam
           transition={{ type: 'spring', stiffness: 260, damping: 20, duration: 0.5 }}
         >
           <Header>Game over</Header>
-          <NumberLine
+          <Score
             as={motion.div}
             initial={{ rotate: 0, scale: 0 }}
             animate={{ rotate: 360, scale: 1 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20, duration: 0.5, delay: 0.5 }}
           >
             {score}
-          </NumberLine>
+          </Score>
           <ValuesContainer
             as={motion.div}
             initial={{ rotate: 0, scale: 0 }}
@@ -77,7 +77,7 @@ const Header = styled.h2`
   margin-top: 12px;
 `;
 
-const NumberLine = styled.h3`
+const Score = styled.h3`
   color: #f1faee;
   font-size: 156px;
 `;
