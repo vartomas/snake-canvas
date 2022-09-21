@@ -3,7 +3,7 @@ import { Settings, SnakeRef, Positions, Fruit } from '../model/game';
 
 const settings: Settings = {
   gridSize: 40,
-  tileSize: 10,
+  tileSize: 12,
   speed: 20,
   tailColor: '#05467D',
 };
