@@ -16,19 +16,39 @@ const GameOverModal: React.FC<Props> = ({ score, fruitsEaten, gameOver, resetGam
       {gameOver && (
         <Container
           as={motion.div}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
+          initial={{ rotate: 180, scale: 0 }}
+          animate={{ rotate: 0, scale: 1 }}
           exit={{ scale: 0 }}
-          transition={{ duration: 0.5, type: 'spring', stiffness: 200, damping: 10, mass: 1 }}
+          transition={{ type: 'spring', stiffness: 260, damping: 20, duration: 0.5 }}
         >
           <Header>Game over</Header>
-          <NumberLine>{score}</NumberLine>
-          <ValuesContainer>
+          <NumberLine
+            as={motion.div}
+            initial={{ rotate: 0, scale: 0 }}
+            animate={{ rotate: 360, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 20, duration: 0.5, delay: 0.5 }}
+          >
+            {score}
+          </NumberLine>
+          <ValuesContainer
+            as={motion.div}
+            initial={{ rotate: 0, scale: 0 }}
+            animate={{ rotate: 360, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 20, duration: 0.5, delay: 1 }}
+          >
             <FruitCount url="strawberry.svg" value={fruitsEaten.filter((x) => x === 'strawberry').length} />
             <FruitCount url="banana.svg" value={fruitsEaten.filter((x) => x === 'banana').length} />
             <FruitCount url="apple.svg" value={fruitsEaten.filter((x) => x === 'apple').length} />
           </ValuesContainer>
-          <Button as={motion.button} whileHover={{ scale: 1.1 }} onClick={resetGame}>
+          <Button
+            as={motion.button}
+            animate={{
+              rotate: [0, 2, 0, -2, 0, 0, 0, 0, 0, 0],
+              scale: [1, 1.05, 1, 1.05, 1, 1, 1, 1, 1, 1],
+            }}
+            transition={{ repeat: Infinity }}
+            onClick={resetGame}
+          >
             Restart (Spacebar)
           </Button>
         </Container>

@@ -128,6 +128,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   };
 
   const resetGame = () => {
+    snakeRef.current.direction = 'right';
     snakeRef.current.snakeLength = 5;
     positions = getStartingPosition();
     pointPositions = {

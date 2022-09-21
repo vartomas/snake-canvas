@@ -20,8 +20,10 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 3px;
-  margin-right: 3px;
+  margin-left: 6px;
+  margin-right: 6px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 `;
 
 const Image = styled.img`
@@ -30,8 +32,9 @@ const Image = styled.img`
 
 const Text = styled.p`
   font-size: 24px;
-  color: white;
+  color: #1d3557;
   margin-left: 8px;
+  font-weight: 700;
 `;
 
 export default FruitCount;
