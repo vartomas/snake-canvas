@@ -25,11 +25,11 @@ const Container = styled.div`
 `;
 
 const Image = styled.img`
-  height: 50px;
+  height: 40px;
 `;
 
 const Text = styled.p`
-  font-size: 32px;
+  font-size: 24px;
   color: white;
   margin-left: 8px;
 `;
