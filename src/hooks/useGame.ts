@@ -1,17 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-
-interface Settings {
-  gridSize: number;
-  tileSize: number;
-  speed: number;
-  tailColor: string;
-}
-
-type Direction = 'up' | 'down' | 'left' | 'right';
-
-type Positions = [number, number][];
-
-export type Fruit = 'strawberry' | 'banana' | 'apple';
+import { Settings, SnakeRef, Positions, Fruit } from '../model/game';
 
 const settings: Settings = {
   gridSize: 40,
@@ -19,13 +7,6 @@ const settings: Settings = {
   speed: 20,
   tailColor: '#05467D',
 };
-
-interface SnakeRef {
-  score: number;
-  direction: Direction;
-  snakeLength: number;
-  fruitsEaten: Fruit[];
-}
 
 export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | null>) => {
   const [gameOver, setGameOver] = useState(false);

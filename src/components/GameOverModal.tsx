@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { Fruit } from '../hooks/useGame';
+import { Fruit } from '../model/game';
 import FruitCount from './FruitCount';
 
 interface Props {
