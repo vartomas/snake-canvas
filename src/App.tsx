@@ -26,6 +26,10 @@ const Wrap = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #2f3e46;
+  background-image: url('bg.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
 export default App;

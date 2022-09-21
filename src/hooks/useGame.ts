@@ -4,28 +4,36 @@ interface Settings {
   gridSize: number;
   tileSize: number;
   speed: number;
-  snakeColor: string;
+  tailColor: string;
 }
 
 type Direction = 'up' | 'down' | 'left' | 'right';
 
 type Positions = [number, number][];
 
-type Fruit = 'strawberry' | 'banana' | 'apple';
+export type Fruit = 'strawberry' | 'banana' | 'apple';
 
 const settings: Settings = {
   gridSize: 40,
   tileSize: 10,
   speed: 20,
-  snakeColor: '#457b9d',
+  tailColor: '#05467D',
 };
+
+interface SnakeRef {
+  score: number;
+  direction: Direction;
+  snakeLength: number;
+  fruitsEaten: Fruit[];
+}
 
 export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | null>) => {
   const [gameOver, setGameOver] = useState(false);
-  const snakeRef = useRef<{ score: number; direction: Direction; snakeLength: number }>({
+  const snakeRef = useRef<SnakeRef>({
     score: 0,
     direction: 'right',
     snakeLength: 5,
+    fruitsEaten: [],
   });
 
   const strawberry = new Image();
@@ -115,6 +123,8 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
       default:
         break;
     }
+
+    snakeRef.current.fruitsEaten.push(fruit);
   };
 
   const resetGame = () => {
@@ -126,6 +136,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
       apple: generateRandomPointPosition(),
     };
     snakeRef.current.score = 0;
+    snakeRef.current.fruitsEaten = [];
     setGameOver(false);
   };
 
@@ -168,7 +179,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     ctx.drawImage(strawberry, pointPositions.strawberry[0], pointPositions.strawberry[1], settings.tileSize, settings.tileSize);
     ctx.drawImage(banana, pointPositions.banana[0], pointPositions.banana[1], settings.tileSize, settings.tileSize);
     ctx.drawImage(apple, pointPositions.apple[0], pointPositions.apple[1], settings.tileSize, settings.tileSize);
-    ctx.fillStyle = settings.snakeColor;
+    ctx.fillStyle = settings.tailColor;
     positions.forEach((x) => {
       ctx.fillRect(x[0], x[1], settings.tileSize, settings.tileSize);
     });
@@ -213,5 +224,5 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     return () => document.removeEventListener('keydown', keyPressEvent);
   }, [gameOver]);
 
-  return { score: snakeRef.current.score, gameOver, settings, resetGame };
+  return { score: snakeRef.current.score, fruitsEaten: snakeRef.current.fruitsEaten, gameOver, settings, resetGame };
 };

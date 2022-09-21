@@ -1,13 +1,16 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import { Fruit } from '../hooks/useGame';
+import FruitCount from './FruitCount';
 
 interface Props {
   score: number;
+  fruitsEaten: Fruit[];
   gameOver: boolean;
   resetGame: () => void;
 }
 
-const GameOverModal: React.FC<Props> = ({ score, gameOver, resetGame }) => {
+const GameOverModal: React.FC<Props> = ({ score, fruitsEaten, gameOver, resetGame }) => {
   return (
     <>
       {gameOver && (
@@ -20,6 +23,11 @@ const GameOverModal: React.FC<Props> = ({ score, gameOver, resetGame }) => {
         >
           <Header>Game over</Header>
           <NumberLine>{score}</NumberLine>
+          <ValuesContainer>
+            <FruitCount url="strawberry.svg" value={fruitsEaten.filter((x) => x === 'strawberry').length} />
+            <FruitCount url="banana.svg" value={fruitsEaten.filter((x) => x === 'banana').length} />
+            <FruitCount url="apple.svg" value={fruitsEaten.filter((x) => x === 'apple').length} />
+          </ValuesContainer>
           <Button as={motion.button} whileHover={{ scale: 1.1 }} onClick={resetGame}>
             Restart (Spacebar)
           </Button>
@@ -52,6 +60,12 @@ const Header = styled.h2`
 const NumberLine = styled.h3`
   color: #f1faee;
   font-size: 156px;
+`;
+
+const ValuesContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Button = styled.button`
