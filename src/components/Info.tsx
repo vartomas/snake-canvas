@@ -29,6 +29,7 @@ const Container = styled(motion.span)`
   top: 18px;
   left: 18px;
   background-color: ${({ theme }) => theme.color.white};
+  transition: background-color 0.2s ease-in-out;
   color: ${({ theme }) => theme.color.primaryDark};
   font-weight: 700;
   cursor: default;
@@ -38,6 +39,10 @@ const Container = styled(motion.span)`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.primaryLight};
+  }
 `;
 
 const Popup = styled(motion.div)`
