@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { Settings, SnakeRef, Positions, Fruit } from '../model/game';
+import { Settings, SnakeRef, Positions, Fruit, Position, FruitPosition } from '../model/game';
 
 const settings: Settings = {
   gridSize: 40,
@@ -24,7 +24,9 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   banana.src = 'banana.svg';
   apple.src = 'apple.svg';
 
-  const getStartingPosition = (): Positions => [[(settings.gridSize * settings.tileSize) / 2, (settings.gridSize * settings.tileSize) / 2]];
+  const getStartingPosition = (): Positions => [
+    [(settings.gridSize * settings.tileSize) / 2, (settings.gridSize * settings.tileSize) / 2, 'right'],
+  ];
 
   let pointPositions = {
     strawberry: [0, 0],
@@ -32,8 +34,8 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     apple: [0, 0],
   };
 
-  const generateRandomPointPosition = (): [number, number] => {
-    const randomPos: [number, number] = [
+  const generateRandomPointPosition = (): FruitPosition => {
+    const randomPos: FruitPosition = [
       Math.floor(Math.random() * settings.gridSize) * settings.tileSize,
       Math.floor(Math.random() * settings.gridSize) * settings.tileSize,
     ];
@@ -58,30 +60,30 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     apple: generateRandomPointPosition(),
   };
 
-  const getNewHeadPosition = (): [number, number] => {
+  const getNewHeadPosition = (): Position => {
     const { gridSize, tileSize } = settings;
 
     if (snakeRef.current.direction === 'right') {
-      const position: [number, number] = [positions[0][0] + settings.tileSize, positions[0][1]];
-      return position[0] > (gridSize - 1) * tileSize ? [0, position[1]] : position;
+      const position: Position = [positions[0][0] + tileSize, positions[0][1], 'right'];
+      return position[0] > (gridSize - 1) * tileSize ? [0, position[1], 'right'] : position;
     }
 
     if (snakeRef.current.direction === 'left') {
-      const position: [number, number] = [positions[0][0] - settings.tileSize, positions[0][1]];
-      return position[0] < 0 ? [(gridSize - 1) * tileSize, position[1]] : position;
+      const position: Position = [positions[0][0] - tileSize, positions[0][1], 'left'];
+      return position[0] < 0 ? [(gridSize - 1) * tileSize, position[1], 'left'] : position;
     }
 
     if (snakeRef.current.direction === 'up') {
-      const position: [number, number] = [positions[0][0], positions[0][1] - settings.tileSize];
-      return position[1] < 0 ? [position[0], (gridSize - 1) * tileSize] : position;
+      const position: Position = [positions[0][0], positions[0][1] - tileSize, 'up'];
+      return position[1] < 0 ? [position[0], (gridSize - 1) * tileSize, 'up'] : position;
     }
 
     if (snakeRef.current.direction === 'down') {
-      const position: [number, number] = [positions[0][0], positions[0][1] + settings.tileSize];
-      return position[1] > (gridSize - 1) * tileSize ? [position[0], 0] : position;
+      const position: Position = [positions[0][0], positions[0][1] + tileSize, 'down'];
+      return position[1] > (gridSize - 1) * tileSize ? [position[0], 0, 'down'] : position;
     }
 
-    return [0, 0];
+    return [0, 0, 'right'];
   };
 
   const eatPoint = (fruit: Fruit) => {
@@ -122,7 +124,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     setGameOver(false);
   };
 
-  const checkCrash = (newPos: [number, number]) => {
+  const checkCrash = (newPos: Position) => {
     if (positions.find((x) => x[0] === newPos[0] && x[1] === newPos[1])) {
       return true;
     }
@@ -131,7 +133,7 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
   };
 
   const moveSnake = () => {
-    const cutEnd = (arr: [number, number][]) =>
+    const cutEnd = (arr: Positions) =>
       snakeRef.current.snakeLength >= positions.length ? arr : arr.slice(0, snakeRef.current.snakeLength - positions.length);
     const newPos = getNewHeadPosition();
 
@@ -176,23 +178,23 @@ export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | nu
     }, 1000 / settings.speed);
 
     return () => clearInterval(interval);
-  }, [draw, gameOver]);
+  }, [gameOver]);
 
   useEffect(() => {
     const keyPressEvent = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' && snakeRef.current.direction !== 'right') {
+      if (e.key === 'ArrowLeft' && positions[0][2] !== 'right') {
         snakeRef.current.direction = 'left';
       }
 
-      if (e.key === 'ArrowRight' && snakeRef.current.direction !== 'left') {
+      if (e.key === 'ArrowRight' && positions[0][2] !== 'left') {
         snakeRef.current.direction = 'right';
       }
 
-      if (e.key === 'ArrowUp' && snakeRef.current.direction !== 'down') {
+      if (e.key === 'ArrowUp' && positions[0][2] !== 'down') {
         snakeRef.current.direction = 'up';
       }
 
-      if (e.key === 'ArrowDown' && snakeRef.current.direction !== 'up') {
+      if (e.key === 'ArrowDown' && positions[0][2] !== 'up') {
         snakeRef.current.direction = 'down';
       }
 

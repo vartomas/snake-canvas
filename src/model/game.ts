@@ -7,7 +7,11 @@ export interface Settings {
 
 export type Direction = 'up' | 'down' | 'left' | 'right';
 
-export type Positions = [number, number][];
+export type Position = [number, number, Direction];
+
+export type Positions = Position[];
+
+export type FruitPosition = [number, number];
 
 export type Fruit = 'strawberry' | 'banana' | 'apple';
 
