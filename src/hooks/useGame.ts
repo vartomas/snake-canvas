@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Settings, SnakeRef, Positions, Fruit, Position, FruitPosition } from '../model/game';
-import theme from '../model/theme';
+import theme from '../utils/theme';
 
 const settings: Settings = {
   gridSize: 40,

@@ -2,7 +2,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import Game from './components/Game';
 
 import { createGlobalStyle } from 'styled-components';
-import theme from './model/theme';
+import theme from './utils/theme';
 
 const GlobalStyle = createGlobalStyle`
   * {
