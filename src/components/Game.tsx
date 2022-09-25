@@ -16,8 +16,8 @@ const Game = () => {
 };
 
 const Canvas = styled.canvas`
-  border: 3px solid #0376be;
-  background-color: #b1d0e6;
+  border: 3px solid ${({ theme }) => theme.color.primary};
+  background-color: ${({ theme }) => theme.color.white};
 `;
 
 export default Game;

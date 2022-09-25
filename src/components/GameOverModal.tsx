@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { Fruit } from '../model/game';
 import FruitCount from './FruitCount';
+import Info from './Info';
 
 interface Props {
   score: number;
@@ -47,7 +48,7 @@ const GameOverModal: React.FC<Props> = ({ score, fruitsEaten, gameOver, resetGam
           >
             Restart (Spacebar)
           </Button>
-          <Info>i</Info>
+          <Info />
         </Container>
       )}
     </>
@@ -57,10 +58,10 @@ const GameOverModal: React.FC<Props> = ({ score, fruitsEaten, gameOver, resetGam
 const Container = styled(motion.div)`
   width: 600px;
   height: 600px;
-  background-color: #1d3557;
+  background-color: ${({ theme }) => theme.color.primaryDark};
   position: absolute;
   border-radius: 24px;
-  border: 3px solid #a8dadc;
+  border: 3px solid ${({ theme }) => theme.color.primaryLight};
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
   display: flex;
   flex-direction: column;
@@ -69,13 +70,13 @@ const Container = styled(motion.div)`
 `;
 
 const Header = styled.h2`
-  color: #f1faee;
+  color: ${({ theme }) => theme.color.white};
   font-size: 36px;
   margin-top: 12px;
 `;
 
 const Score = styled(motion.div)`
-  color: #f1faee;
+  color: ${({ theme }) => theme.color.white};
   font-size: 156px;
 `;
 
@@ -89,27 +90,12 @@ const Button = styled(motion.button)`
   margin-bottom: 24px;
   padding: 24px;
   font-size: 24px;
-  color: #1d3557;
+  color: ${({ theme }) => theme.color.primaryDark};
   border-radius: 12px;
   border: none;
   outline: none;
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-`;
-
-const Info = styled.span`
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  color: white;
-  cursor: pointer;
-  border: 1px solid white;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 export default GameOverModal;

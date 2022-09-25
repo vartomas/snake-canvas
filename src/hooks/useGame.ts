@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef } from 'react';
 import { Settings, SnakeRef, Positions, Fruit, Position, FruitPosition } from '../model/game';
+import theme from '../model/theme';
 
 const settings: Settings = {
   gridSize: 40,
   tileSize: 12,
   speed: 20,
-  tailColor: '#05467D',
+  tailColor: theme.color.primaryDark,
 };
 
 export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | null>) => {
