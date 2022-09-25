@@ -12,9 +12,9 @@ const PopupMotion = {
 };
 
 const Info = () => (
-  <Container initial="rest" whileHover="hover" animate="rest" layout>
+  <Container initial="rest" whileHover="hover" animate="rest">
     <span>i</span>
-    <Popup variants={PopupMotion} layout transition={{ type: 'spring', stiffness: 260, damping: 20, duration: 0.5 }}>
+    <Popup variants={PopupMotion} transition={{ type: 'spring', stiffness: 260, damping: 20, duration: 0.5 }}>
       <InfoSection src="strawberry.svg" points={5} />
       <Divider />
       <InfoSection src="banana.svg" points={3} />
