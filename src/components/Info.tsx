@@ -27,7 +27,7 @@ const Info = () => (
 const Container = styled(motion.span)`
   position: absolute;
   top: 18px;
-  right: 18px;
+  left: 18px;
   background-color: ${({ theme }) => theme.color.white};
   color: ${({ theme }) => theme.color.primaryDark};
   font-weight: 700;
@@ -43,7 +43,7 @@ const Container = styled(motion.span)`
 const Popup = styled(motion.div)`
   position: absolute;
   top: 32px;
-  right: 32px;
+  left: 32px;
   background-color: ${({ theme }) => theme.color.white};
   color: ${({ theme }) => theme.color.primaryDark};
   padding: 8px;
