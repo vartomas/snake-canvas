@@ -19,6 +19,8 @@ const GameOverModal: React.FC<Props> = ({ score, fruitsEaten, gameOver, resetGam
           initial={{ rotate: 180, scale: 0 }}
           animate={{ rotate: 0, scale: 1 }}
           exit={{ scale: 0 }}
+          drag
+          dragSnapToOrigin
           transition={{ type: 'spring', stiffness: 260, damping: 20, duration: 0.5 }}
         >
           <Header>Game over</Header>

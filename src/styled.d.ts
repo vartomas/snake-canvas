@@ -1,6 +1,6 @@
 import 'styled-components';
 
-interface Palette {
+interface ColorPalette {
   primary: string;
   primaryDark: string;
   primaryLight: string;
@@ -9,6 +9,6 @@ interface Palette {
 
 declare module 'styled-components' {
   export interface DefaultTheme {
-    color: Palette;
+    color: ColorPalette;
   }
 }

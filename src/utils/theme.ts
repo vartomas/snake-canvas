@@ -1,7 +1,7 @@
-import { Palette } from '../styled';
+import { ColorPalette } from '../styled';
 
 interface Theme {
-  color: Palette;
+  color: ColorPalette;
 }
 
 const theme: Theme = {

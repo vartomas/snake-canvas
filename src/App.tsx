@@ -11,6 +11,9 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     font-family: 'Ubuntu', sans-serif;
   }
+  body {
+    overflow: hidden;
+  }
 `;
 
 const App = () => (
