@@ -28,9 +28,10 @@ const Container = styled(motion.span)`
   position: absolute;
   top: 18px;
   right: 18px;
-  color: ${({ theme }) => theme.color.white};
+  background-color: ${({ theme }) => theme.color.white};
+  color: ${({ theme }) => theme.color.primaryDark};
+  font-weight: 700;
   cursor: default;
-  border: 1px solid white;
   width: 24px;
   height: 24px;
   border-radius: 50%;
