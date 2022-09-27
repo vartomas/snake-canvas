@@ -1,6 +1,6 @@
 import 'styled-components';
 
-interface ColorPalette {
+export interface ColorPalette {
   primary: string;
   primaryDark: string;
   primaryLight: string;
@@ -10,5 +10,6 @@ interface ColorPalette {
 declare module 'styled-components' {
   export interface DefaultTheme {
     color: ColorPalette;
+    bgUrl: string;
   }
 }

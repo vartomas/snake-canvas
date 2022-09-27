@@ -1,22 +1,23 @@
 import { useEffect, useState, useRef } from 'react';
+import { useTheme } from './useTheme';
 import { Settings, SnakeRef, Positions, Fruit, Position, FruitPosition } from '../model/game';
-import theme from '../utils/theme';
-
-const settings: Settings = {
-  gridSize: 40,
-  tileSize: 12,
-  speed: 20,
-  tailColor: theme.color.primaryDark,
-};
 
 export const useGame = (canvasRef: React.MutableRefObject<HTMLCanvasElement | null>) => {
   const [gameOver, setGameOver] = useState(false);
+  const { currentTheme } = useTheme();
   const snakeRef = useRef<SnakeRef>({
     score: 0,
     direction: 'right',
     snakeLength: 5,
     fruitsEaten: [],
   });
+
+  const settings: Settings = {
+    gridSize: 40,
+    tileSize: 12,
+    speed: 20,
+    tailColor: currentTheme.color.primaryDark,
+  };
 
   const strawberry = new Image();
   const banana = new Image();

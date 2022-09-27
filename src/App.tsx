@@ -1,8 +1,7 @@
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import Game from './components/Game';
-
 import { createGlobalStyle } from 'styled-components';
-import theme from './utils/theme';
+import { ThemeProvider } from './hooks/useTheme';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -17,12 +16,12 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const App = () => (
-  <Wrap>
-    <GlobalStyle />
-    <ThemeProvider theme={theme}>
+  <ThemeProvider>
+    <Wrap>
+      <GlobalStyle />
       <Game />
-    </ThemeProvider>
-  </Wrap>
+    </Wrap>
+  </ThemeProvider>
 );
 
 const Wrap = styled.div`
@@ -31,7 +30,7 @@ const Wrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('bg.jpg');
+  background-image: url(${({ theme }) => theme.bgUrl});
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
