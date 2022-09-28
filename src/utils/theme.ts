@@ -1,11 +1,13 @@
 import { ColorPalette } from '../styled';
 
 export interface Theme {
+  name: 'Default' | 'Ami' | 'Sofi';
   color: ColorPalette;
   bgUrl: string;
 }
 
 const defaultTheme: Theme = {
+  name: 'Default',
   color: {
     primary: '#0376be',
     primaryDark: '#1d3557',
@@ -16,6 +18,7 @@ const defaultTheme: Theme = {
 };
 
 const amiTheme: Theme = {
+  name: 'Ami',
   color: {
     primary: '#fff',
     primaryDark: '#fff',
@@ -26,6 +29,7 @@ const amiTheme: Theme = {
 };
 
 const sofiTheme: Theme = {
+  name: 'Sofi',
   color: {
     primary: '#777',
     primaryDark: '#777',

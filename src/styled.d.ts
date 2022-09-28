@@ -9,6 +9,7 @@ export interface ColorPalette {
 
 declare module 'styled-components' {
   export interface DefaultTheme {
+    name: 'Default' | 'Ami' | 'Sofi';
     color: ColorPalette;
     bgUrl: string;
   }

@@ -30,7 +30,8 @@ const GameOverModal: FC<Props> = ({ score, fruitsEaten, gameOver, resetGame }) =
           dragSnapToOrigin
           transition={{ type: 'spring', stiffness: 260, damping: 20, duration: 0.5 }}
         >
-          {settingsOpen ? <Settings /> : <LastGameInfo score={score} fruitsEaten={fruitsEaten} resetGame={resetGame} />}
+          <LastGameInfo score={score} fruitsEaten={fruitsEaten} settingsOpen={settingsOpen} resetGame={resetGame} />
+          <Settings settingsOpen={settingsOpen} />
           <Info />
           <SettingsButton onClick={toggleSettings} />
         </Container>

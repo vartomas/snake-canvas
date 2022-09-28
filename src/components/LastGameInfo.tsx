@@ -6,12 +6,18 @@ import FruitCount from './FruitCount';
 interface Props {
   score: number;
   fruitsEaten: Fruit[];
+  settingsOpen: boolean;
   resetGame: () => void;
 }
 
-const LastGameInfo: React.FC<Props> = ({ score, fruitsEaten, resetGame }) => {
+const LastGameInfo: React.FC<Props> = ({ score, fruitsEaten, settingsOpen, resetGame }) => {
+  const variants = {
+    open: { y: '-100%' },
+    closed: { y: 0 },
+  };
+
   return (
-    <Container>
+    <Container animate={settingsOpen ? 'open' : 'closed'} variants={variants}>
       <Header>Game over</Header>
       <Score
         initial={{ rotate: 0, scale: 0 }}
@@ -43,8 +49,9 @@ const LastGameInfo: React.FC<Props> = ({ score, fruitsEaten, resetGame }) => {
   );
 };
 
-const Container = styled.div`
+const Container = styled(motion.div)`
   height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

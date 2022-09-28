@@ -3,18 +3,24 @@ import { motion } from 'framer-motion';
 import InfoSection from './InfoSection';
 
 const PopupMotion = {
-  rest: {
+  hidden: {
     scale: 0,
+    x: '-60%',
+    y: '-60%',
+    transition: { type: 'easeIn', duration: 0.2 },
   },
-  hover: {
+  show: {
     scale: 1,
+    x: 0,
+    y: 0,
+    transition: { type: 'spring', stiffness: 260, damping: 20, duration: 0.4 },
   },
 };
 
 const Info = () => (
-  <Container initial="rest" whileHover="hover" animate="rest">
+  <Container initial="hidden" whileHover="show" animate="hidden">
     <span>i</span>
-    <Popup variants={PopupMotion} transition={{ type: 'spring', stiffness: 260, damping: 20, duration: 0.5 }}>
+    <Popup variants={PopupMotion}>
       <InfoSection src="strawberry.svg" points={5} />
       <Divider />
       <InfoSection src="banana.svg" points={3} />
