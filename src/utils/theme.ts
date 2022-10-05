@@ -20,23 +20,23 @@ const defaultTheme: Theme = {
 const amiTheme: Theme = {
   name: 'Ami',
   color: {
-    primary: '#fff',
-    primaryDark: '#fff',
-    primaryLight: '#fff',
+    primary: '#a9927d',
+    primaryDark: '#5e503f',
+    primaryLight: '#f2f4f3',
     white: '#ffffff',
   },
-  bgUrl: '',
+  bgUrl: 'ami-bg.jpg',
 };
 
 const sofiTheme: Theme = {
   name: 'Sofi',
   color: {
-    primary: '#777',
-    primaryDark: '#777',
-    primaryLight: '#777',
-    white: '#777',
+    primary: '#c9184a',
+    primaryDark: '#590d22',
+    primaryLight: '#ffb3c1',
+    white: '#ffffff',
   },
-  bgUrl: '',
+  bgUrl: 'sofi-bg.jpg',
 };
 
 export { defaultTheme, amiTheme, sofiTheme };
