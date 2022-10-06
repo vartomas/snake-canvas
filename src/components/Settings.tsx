@@ -16,9 +16,9 @@ const Settings: FC<Props> = ({ settingsOpen }) => {
 
   return (
     <Container animate={settingsOpen ? 'open' : 'closed'} variants={variants}>
-      <ThemeSelector />
-      <Gap />
       <SpeedSelector />
+      <Gap />
+      <ThemeSelector />
     </Container>
   );
 };
