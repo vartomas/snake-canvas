@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { FC } from 'react';
 import styled from 'styled-components';
+import SpeedSelector from './SpeedSelector';
 import ThemeSelector from './ThemeSelector';
 
 interface Props {
@@ -16,6 +17,8 @@ const Settings: FC<Props> = ({ settingsOpen }) => {
   return (
     <Container animate={settingsOpen ? 'open' : 'closed'} variants={variants}>
       <ThemeSelector />
+      <Gap />
+      <SpeedSelector />
     </Container>
   );
 };
@@ -27,6 +30,10 @@ const Container = styled(motion.div)`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+`;
+
+const Gap = styled.div`
+  height: 24px;
 `;
 
 export default Settings;

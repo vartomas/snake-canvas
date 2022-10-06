@@ -1,5 +1,5 @@
-import { useState, FC } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, FC } from 'react';
+import { motion, PanInfo, useDragControls } from 'framer-motion';
 import styled from 'styled-components';
 import { Fruit } from '../model/game';
 import Info from './Info';
@@ -17,7 +17,21 @@ interface Props {
 const GameOverModal: FC<Props> = ({ score, fruitsEaten, gameOver, resetGame }) => {
   const [settingsOpen, setSettingsOpen] = useState(false);
 
+  useEffect(() => {
+    setSettingsOpen(false);
+  }, [gameOver]);
+
   const toggleSettings = () => setSettingsOpen((prev) => !prev);
+
+  const controls = useDragControls();
+
+  const onDragStart = (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    if ((e.target as Element).classList.contains('block-drag')) {
+      (controls as any).componentControls.forEach((entry: any) => {
+        entry.stop(e, info);
+      });
+    }
+  };
 
   return (
     <>
@@ -27,7 +41,9 @@ const GameOverModal: FC<Props> = ({ score, fruitsEaten, gameOver, resetGame }) =
           animate={{ rotate: 0, scale: 1 }}
           exit={{ scale: 0 }}
           drag
+          dragControls={controls}
           dragSnapToOrigin
+          onDragStart={onDragStart}
           transition={{ type: 'spring', stiffness: 260, damping: 20, duration: 0.5 }}
         >
           <LastGameInfo score={score} fruitsEaten={fruitsEaten} settingsOpen={settingsOpen} resetGame={resetGame} />

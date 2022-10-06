@@ -28,7 +28,6 @@ const ThemeSelector = () => {
 export default ThemeSelector;
 
 const Container = styled.div`
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;

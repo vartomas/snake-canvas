@@ -1,7 +1,6 @@
 export interface Settings {
   gridSize: number;
   tileSize: number;
-  speed: number;
   tailColor: string;
 }
 
