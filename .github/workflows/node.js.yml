@@ -27,6 +27,6 @@ jobs:
             npm install
             npm run build
             sudo systemctl stop nginx
-            rm -r /var/www/localghost.lt/html/*
-            cp -R dist /var/www/localghost.lt/html
+            sudo rm -r /var/www/localghost.lt/html/*
+            sudo cp -R dist /var/www/localghost.lt/html
             sudo systemctl start nginx
