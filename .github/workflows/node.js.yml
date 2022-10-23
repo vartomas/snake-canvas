@@ -22,6 +22,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd ~/snake-canvas/
+            rm -r ~/snake-canvas/dist
             git pull
             npm prune
             npm install
